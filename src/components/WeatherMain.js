@@ -6,7 +6,7 @@ import searchIcon from "../assets/search1.svg";
 import rainy from "../assets/cloudy-rain.svg";
 import humidity from "../assets/thermometer1.svg";
 import wind from "../assets/wind.svg";
-import localData from "./localData.json";
+// import localData from "./localData.json";
 
 
 export default function WeatherMain({localLocation, locationError}) {
@@ -27,10 +27,10 @@ export default function WeatherMain({localLocation, locationError}) {
 
   const API_KEY = "1d1cc4d07aae4026877235446232708";
 
-  const localUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${localLocation.latitude},${localLocation.longitude}&hours=24&days=7`;
+  const localUrl = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${localLocation.latitude},${localLocation.longitude}&hours=24&days=7`;
   
   
-  const foreignUrl = `http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${foreignLocation.search}&hours=24&days=7`;
+  const foreignUrl = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${foreignLocation.search}&hours=24&days=7`;
 
 
   function displayScreen() {
