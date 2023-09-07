@@ -2,6 +2,8 @@
 
 Built this project from scratch using React and CSS. This app fetches weather data from the WeatherAPI site. View screenshots for the [main screen](src/assets/screenshot1.png) and the [weekly forecast screen](src/assets/screenshot2.png).
 
+The app is live at https://elements-theta.vercel.app
+
 ## Built With
 
 * React.js utilizing ```useState``` and ```useEffect```. I read the [React docs](www.reactjs.org) to learn about using the ```useRef``` hook but didn't eventually use it in this project.  
@@ -42,4 +44,4 @@ Built this project from scratch using React and CSS. This app fetches weather da
 * [WeatherAPI](www.weatherapi.com)
 * [SVGRepo](www.svgrepo.com)
 * [StackOverflow](www.stackoverflow.com)
-
+* [Unsplash](www.unsplash.com)
