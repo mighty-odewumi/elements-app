@@ -161,9 +161,13 @@ export default function WeatherMain({localLocation, locationError}) {
   const weatherElems = locationData.map((val, index) => {
     // Convert time to a human-readable format
     const time = new Date();
-    const convertedTime = time.toUTCString()
-    .split(" ").slice(0, 4);
-    const splitTime = convertedTime.join(" ");
+    // const convertedTime = time.toUTCString()
+    // .split(" ").slice(0, 4);
+    // const splitTime = convertedTime.join(" ");
+
+    const convertedTime = time.toDateString(); // Changed to this to fix a subtle bug of the time being displayed with a different time offset because of the implementation of UTC.
+    // console.log(convertedTime);
+ 
 
     return (
       <div 
@@ -194,7 +198,7 @@ export default function WeatherMain({localLocation, locationError}) {
 
         <div className="location-date">
           <span className="location">{val.location.name}</span>
-          <span className="date">{splitTime}</span>
+          <span className="date">{convertedTime}</span>
         </div>
 
         <img 

@@ -15,10 +15,14 @@ export default function Weeklies({flipDisplay, setFlipDisplay, locationData}) {
 
     // Convert time to a human-readable format.
     const time = new Date();
-    const convertedTime = time.toUTCString()
-      .split(" ")
-      .slice(0, 4);
-    const splitTime = convertedTime.join(" ");
+    // const convertedTime = time.toUTCString()
+    //   .split(" ")
+    //   .slice(0, 4);
+    // const splitTime = convertedTime.join(" ");
+
+    const convertedTime = time.toDateString(); // Changed to this to fix a subtle bug of the time being displayed with a different time offset because of the implementation of UTC.
+    // console.log(convertedTime);
+    
 
     return (
       <>
@@ -26,7 +30,7 @@ export default function Weeklies({flipDisplay, setFlipDisplay, locationData}) {
           className="subheading-date"
         >
           <span className="subheading">Today</span>
-          <span className="date">{splitTime}</span> 
+          <span className="date">{convertedTime}</span> 
         </div>
 
         <HourliesFull locationData={locationData}/>
