@@ -9,6 +9,10 @@ The app is live at https://elements-theta.vercel.app
 * React.js utilizing ```useState``` and ```useEffect```. I read the [React docs](www.reactjs.org) to learn about using the ```useRef``` hook but didn't eventually use it in this project.  
 
 * CSS
+  
+* Axios (first time using this library in a project. I was conversant with Fetch before).
+
+* HTML5 Geolocation API
 
 ## Challenges
 
@@ -33,11 +37,13 @@ The app is live at https://elements-theta.vercel.app
 - [ ] Users can also view the day's forecasts hourly in a carousel.
 - [ ] Ability to view weather forecasts for a week.
 - [ ] Built in Dark Mode by default.
+- [ ] Hightlights the current hour's weather conditions in the carousel.
 
 ## Future Features
 
 - [ ] Toggle between light and dark modes
 - [ ] Displaying more detailed weather info such as UV Index, Carbon Emissions Level and also Alerts issued by government or meteorological agencies.
+- [ ] Displaying an animation when the data is being fetched from the API (based on review from a fellow developer online).
 
 ## Acknowledgements
 
