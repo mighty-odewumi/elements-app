@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import WeatherMain from "./components/WeatherMain";
 import LandingScreen from "./components/LandingScreen";
 
@@ -14,8 +14,6 @@ export default function App() {
 
   const [locationError, setLocationError] = useState(null);
   
-  // const location2 = useRef(null);
-
   const options = {
     maximumAge: 0,
     enableHighAcuuracy: true,
@@ -65,7 +63,7 @@ export default function App() {
           locationError={locationError}
         />
       }
-      
-     </>
+
+    </>
   )
 }

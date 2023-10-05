@@ -6,11 +6,11 @@
 
 body {
   font-family: "Product Sans", sans-serif;
-  background-color: /* #0e130e */ hsl(0, 0%, 0%);
   color: white; 
 }
 
 .landing-screen {
+  transition: ease-in 1s; 
   background: url("./assets/noaa1(edit).jpg") no-repeat;
   background-size: cover;
   color: white;
@@ -55,9 +55,11 @@ body {
   text-shadow: 0 0 50px hsla(0, 0%, 0%, .4);
 }
 
-.main-screen {
+#main-screen {
   padding: 24px;
   text-align: center;
+  transition: ease-in 1s;
+  animation: changeToDark 1s linear;
 }
 
 form {
@@ -190,11 +192,12 @@ input[type="search"]:focus {
   background-color: hsl(210, 100%, 50%);
 }
 
-.weeklies {
+#weeklies {
   margin: 24px;
+  animation: changeToDark linear 1s;
 }
 
-.weeklies h1 {
+#weeklies h1 {
   font-size: 24px;
   text-align: center;
   margin-bottom: 42px;
@@ -258,4 +261,67 @@ input[type="search"]:focus {
 
 .forecast img {
   width: 80px;
+}
+
+.toggle-section {
+  float: right;
+  display: flex;
+  gap: 10px;
+}
+
+.toggle-text {
+  transition: ease-in .5s;
+}
+
+.toggle-slider {
+  background:hsl(210, 100%, 50%);
+  height: 20px;
+  width: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.toggle-circle {
+  background: white;
+  border-radius: 50%;
+  height: 18px;
+  width: 18px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  transition: ease-in .5s;
+}
+
+@keyframes changeToDark {
+  from {
+    background-color: hsl(0, 4%, 80%);
+  }
+
+  to {
+    background-color: hsl(0, 0%, 0%);
+  }
+}
+
+@keyframes changeToLight {
+  from {
+    background-color: hsl(0, 0%, 0%);
+  }
+
+  to {
+    background-color: hsl(0, 0%, 100%);
+  }
+}
+
+@media screen and (min-width: 500px) {
+
+  #main-screen, #weeklies {
+    max-width: 400px;
+    margin: 24px auto;
+    border-radius: 20px;
+  }
+
+  #weeklies {
+    padding: 24px;
+  }
+  
 }

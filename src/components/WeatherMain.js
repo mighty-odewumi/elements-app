@@ -8,10 +8,9 @@ import humidity from "../assets/thermometer1.svg";
 import wind from "../assets/wind.svg";
 // import localData from "./localData.json";
 
-
 export default function WeatherMain({localLocation, locationError}) {
 
-  const [locationData, setLocationData] = useState(null);
+  const [locationData, setLocationData] = useState([]);
 
   const [foreignLocation, setForeignLocation] = useState({
     search: "",
@@ -23,7 +22,15 @@ export default function WeatherMain({localLocation, locationError}) {
 
   const [flipDisplay, setFlipDisplay] = useState(false);
 
+  const [countFlip, setCountFlip] = useState(0);
+  
+  // console.log("Initial", countFlip);
+
   const [weatherMainError, setWeatherMainError] = useState(null);
+
+  const [isToggled, setIsToggled] = useState(false);
+
+  const [resized, setResized] = useState(false);
 
   const API_KEY = "1d1cc4d07aae4026877235446232708";
 
@@ -36,7 +43,6 @@ export default function WeatherMain({localLocation, locationError}) {
   function displayScreen() {
     setFlipDisplay(!flipDisplay);
   }
-
 
   // Detects change in the value of the search box.
   function handleChange(e) {
@@ -123,6 +129,84 @@ export default function WeatherMain({localLocation, locationError}) {
   }
 
 
+  function toggleDarkMode() {
+    setIsToggled(prevValue => {
+      return !prevValue
+    });
+  }
+
+  const darkTextStyles = {
+    color: isToggled ? "gray" : "",
+  };
+
+  const lightTextStyles = {
+    color: isToggled ? "" : "gray",
+  };
+
+  const toggleCircleStyles = {
+    marginRight: isToggled ? "20px" : "",
+    marginLeft: isToggled ? "" : "20px",
+  };
+
+  const changeBackgroundStyles = {
+    animationName: isToggled ? "changeToLight" : "changeToDark",
+  };
+
+  const formStyles = {
+    backgroundColor: isToggled ? "#e1d4d4" : "",
+  };
+
+  const hourliesStyles = {
+    color: isToggled ? "white" : "",
+  };
+
+  const pageWidth = window.innerWidth;
+  const maxWidthNeeded = 500;
+  const checkPageWidth = pageWidth <= maxWidthNeeded;
+
+  // console.log(checkPageWidth);
+
+  let pageBody = document.querySelector("body");
+
+  if (isToggled === true && checkPageWidth) {
+    pageBody.style.backgroundColor = "white";
+    pageBody.style.color = "black";
+  }
+  else if (isToggled === false && checkPageWidth) {
+    pageBody.style.backgroundColor = "black";
+    pageBody.style.color = "white";
+  }
+
+  useEffect(() => {
+    const mainScreen = document.getElementById("main-screen");
+    console.log(mainScreen);
+
+    window.addEventListener("resize", () => {
+      setResized(true);
+    });
+
+    // console.log("Final", countFlip);
+
+    if (
+      (isToggled && checkPageWidth === false && flipDisplay === false) 
+      || (isToggled && flipDisplay && checkPageWidth === false)) {
+      mainScreen.style.backgroundColor = "white";
+      mainScreen.style.color = "black";
+      pageBody.style.backgroundColor = "black";
+      pageBody.style.color = "black";
+    }
+
+    else if (
+      (isToggled === false && checkPageWidth === false && flipDisplay === false) || (isToggled && flipDisplay && checkPageWidth === false)) {
+      mainScreen.style.backgroundColor = "black";
+      mainScreen.style.color = "white";
+      pageBody.style.backgroundColor = "white";
+      // pageBody.style.color = "black";
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isToggled, resized, countFlip]);
+
+
   // Fetches data for the local location of the user.
   useEffect(() => {
     if (!locationData) {
@@ -141,10 +225,11 @@ export default function WeatherMain({localLocation, locationError}) {
   }, [countOnLocationChange]) 
 
 
+
   // Checks if we couldn't get the user's location from the Geolocation API and throws an error.
   if (locationError) {
     return <h3>Couldn't fetch your location. Please check your network and location settings and try reload the page.</h3>
-  }
+  } 
 
   // Checks if there is any error arising from calling the API which are handled in the fetchLocalData and fetchForeign Data functions.
   if (weatherMainError) {
@@ -171,10 +256,37 @@ export default function WeatherMain({localLocation, locationError}) {
 
     return (
       <div 
-        className="main-screen" 
+        id="main-screen" 
         key={index}
+        style={changeBackgroundStyles}
       >
-        <form>
+
+        <div className="toggle-section">
+          <div 
+            className="light-text toggle-text" 
+            style={lightTextStyles}
+          >
+            Light
+          </div>
+
+          <div className="toggle-slider" onClick={toggleDarkMode}>
+            <div 
+              className="toggle-circle"
+              style={toggleCircleStyles}
+            >
+
+            </div>
+          </div>
+
+          <div 
+            className="dark-text toggle-text" 
+            style={darkTextStyles}
+          >
+            Dark
+          </div>
+        </div>
+       
+        <form style={formStyles}>
           <button
             className="submit-btn"
             onClick={handleSubmit}
@@ -211,7 +323,7 @@ export default function WeatherMain({localLocation, locationError}) {
 
         <h3 className="main-weather-desc">{val.current.condition.text}</h3>
 
-        <div className="additional-info">
+        <div className="additional-info" style={hourliesStyles}>
           <div className="info-card">
             <img 
               src={rainy}
@@ -254,10 +366,16 @@ export default function WeatherMain({localLocation, locationError}) {
             <span className="hourly-active">
               Today
             </span>
-            <span onClick={displayScreen} className="full-report-link">View full report</span>
+            <span onClick={displayScreen} className="full-report-link">
+              View full report
+            </span>
+
           </div>
 
-          <Hourlies locationData={locationData}/>
+          <Hourlies 
+            locationData={locationData}
+            hourliesStyles={hourliesStyles}
+          />
         </section>
             
       </div>
@@ -277,6 +395,10 @@ export default function WeatherMain({localLocation, locationError}) {
           flipDisplay={flipDisplay}
           setFlipDisplay={setFlipDisplay} 
           locationData={locationData}
+          changeBackgroundStyles={changeBackgroundStyles}
+          hourliesStyles={hourliesStyles}
+          isToggled={isToggled}
+          setCountFlip={setCountFlip}
         />
       }
 

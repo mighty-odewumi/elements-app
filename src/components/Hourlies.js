@@ -1,7 +1,6 @@
 import {nanoid} from "nanoid";
 
-
-export default function Hourlies({locationData}) {
+export default function Hourlies({locationData, hourliesStyles}) {
 
   const hourlies = locationData[0].forecast.forecastday[0].hour.map((eachHour, wholeIndex) => {
 
@@ -32,6 +31,7 @@ export default function Hourlies({locationData}) {
         return (
           <div
             key={nanoid()} // Creates a unique key for each object rendered.
+            style={hourliesStyles}
             className={
               `hourly-info 
               ${currentTime[0] === checkApiTimeForSlicedHour[0] 
@@ -49,7 +49,6 @@ export default function Hourlies({locationData}) {
           </div>
         )
       });
-
     } 
   
     return sliced;
@@ -84,4 +83,3 @@ export default function Hourlies({locationData}) {
     </div>
   )
 }
-
