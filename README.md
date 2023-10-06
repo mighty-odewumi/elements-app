@@ -38,10 +38,12 @@ The app is live at https://elements-theta.vercel.app
 - [ ] Ability to view weather forecasts for a week.
 - [ ] Built in Dark Mode by default.
 - [ ] Hightlights the current hour's weather conditions in the carousel.
+- [ ] Recently added the abilitiy to toggle between light and dark modes.
+- [ ] Switching between pages now has smooth animation implemented.
+- [ ] App is now responsive on different screen sizes.
 
 ## Future Features
 
-- [ ] Toggle between light and dark modes
 - [ ] Displaying more detailed weather info such as UV Index, Carbon Emissions Level and also Alerts issued by government or meteorological agencies.
 - [ ] Displaying an animation when the data is being fetched from the API (based on review from a fellow developer online).
 
