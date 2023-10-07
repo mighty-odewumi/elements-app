@@ -1,6 +1,6 @@
 # Elements (Weather App) 
 
-Built this project from scratch using React and CSS. This app fetches weather data from the WeatherAPI site. View screenshots for the [main screen](src/assets/screenshot1.png) and the [weekly forecast screen](src/assets/screenshot2.png).
+Built this project from scratch using React and CSS. This app fetches weather data from the WeatherAPI site. View screenshots for the [large screen](src/assets/screenshot3.png) and the [smaller screen](src/assets/screenshot4.png).
 
 The app is live at https://elements-theta.vercel.app
 
