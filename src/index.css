@@ -11,7 +11,7 @@ body {
 
 .landing-screen {
   transition: ease-in 1s; 
-  background: url("./assets/noaa1(edit).jpg") no-repeat;
+  background: black url("./assets/noaa1-edit2.jpg") no-repeat;
   background-size: cover;
   color: white;
   height: 100vh;
@@ -60,6 +60,11 @@ body {
   text-align: center;
   transition: ease-in 1s;
   animation: changeToDark 1s linear;
+}
+
+.error-img {
+  width: 100%;
+  text-align: center;
 }
 
 form {
@@ -322,6 +327,21 @@ input[type="search"]:focus {
 
   #weeklies {
     padding: 24px;
+  }
+
+  .error-img {
+    width: 50%;
+  }
+
+}
+
+@media screen and (min-width: 700px) {
+  .error-img {
+    width: 30%;
+  }
+
+  .error {
+    width: 60%;
   }
   
 }

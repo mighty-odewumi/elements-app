@@ -5,12 +5,16 @@ import Hourlies from "./Hourlies";
 import searchIcon from "../assets/search1.svg";
 import rainy from "../assets/cloudy-rain.svg";
 import humidity from "../assets/thermometer1.svg";
+import errorImg1 from "../assets/error-img2.jpg";
+import errorImg2 from "../assets/error-img3-edit1.jpg";
 import wind from "../assets/wind.svg";
+import Spinner from "./Spinner";
 // import localData from "./localData.json";
+
 
 export default function WeatherMain({localLocation, locationError}) {
 
-  const [locationData, setLocationData] = useState([]);
+  const [locationData, setLocationData] = useState(null);
 
   const [foreignLocation, setForeignLocation] = useState({
     search: "",
@@ -24,21 +28,27 @@ export default function WeatherMain({localLocation, locationError}) {
 
   const [countFlip, setCountFlip] = useState(0);
   
-  // console.log("Initial", countFlip);
-
   const [weatherMainError, setWeatherMainError] = useState(null);
 
   const [isToggled, setIsToggled] = useState(false);
 
   const [resized, setResized] = useState(false);
 
+  const [isDataAvailable, setIsDataAvailable] = useState(false);
+
   const API_KEY = "1d1cc4d07aae4026877235446232708";
 
-  const localUrl = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${localLocation.latitude},${localLocation.longitude}&hours=24&days=7`;
+  const localURL = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${localLocation.latitude},${localLocation.longitude}&hours=24&days=7`;
   
   
-  const foreignUrl = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${foreignLocation.search}&hours=24&days=7`;
+  const foreignURL = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${foreignLocation.search}&hours=24&days=7`;
 
+  
+  const pageWidth = window.innerWidth;
+  const maxWidthNeeded = 500;
+  const checkPageWidth = pageWidth <= maxWidthNeeded;
+
+  let pageBody = document.querySelector("body");
 
   function displayScreen() {
     setFlipDisplay(!flipDisplay);
@@ -65,7 +75,7 @@ export default function WeatherMain({localLocation, locationError}) {
   // Function called for when the user initially uses the app.
   // It uses the user's location data.
   function fetchDataForLocal() {
-    axios.get(localUrl)
+    axios.get(localURL)
       .then(response => {
         console.log("This is data", response.data);
         setLocationData([response.data]);
@@ -95,7 +105,7 @@ export default function WeatherMain({localLocation, locationError}) {
 
   // Function for when the user searches for a location using the search box.
   function fetchDataForForeign() {
-    axios.get(foreignUrl)
+    axios.get(foreignURL)
       .then(response => {
         console.log(response);
         setLocationData([response.data]); 
@@ -131,9 +141,18 @@ export default function WeatherMain({localLocation, locationError}) {
 
   function toggleDarkMode() {
     setIsToggled(prevValue => {
-      return !prevValue
+      return !prevValue;
     });
   }
+
+
+  // Force an update on React to fix a bug whereby the app is not rendering the correct styles on larger screens when the component mounts.
+  function forceUpdate() {
+    setIsDataAvailable(prevValue => !prevValue);
+    console.log("App forced an update!");
+  }
+
+  console.log(isDataAvailable);
 
   const darkTextStyles = {
     color: isToggled ? "gray" : "",
@@ -160,13 +179,24 @@ export default function WeatherMain({localLocation, locationError}) {
     color: isToggled ? "white" : "",
   };
 
-  const pageWidth = window.innerWidth;
-  const maxWidthNeeded = 500;
-  const checkPageWidth = pageWidth <= maxWidthNeeded;
+  const errorContainerStyles = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    width: "100%",
+    height: "100vh",
+    margin: "auto",
+    padding: "16px",
+    textAlign: "center",
+  };
+
+  const errorMessageStyles = {
+    color: pageBody.style.backgroundColor === "black" ? "white" : "black",
+    marginTop: "8px",
+  };
 
   // console.log(checkPageWidth);
-
-  let pageBody = document.querySelector("body");
 
   if (isToggled === true && checkPageWidth) {
     pageBody.style.backgroundColor = "white";
@@ -176,37 +206,8 @@ export default function WeatherMain({localLocation, locationError}) {
     pageBody.style.backgroundColor = "black";
     pageBody.style.color = "white";
   }
-
-  useEffect(() => {
-    const mainScreen = document.getElementById("main-screen");
-    console.log(mainScreen);
-
-    window.addEventListener("resize", () => {
-      setResized(true);
-    });
-
-    // console.log("Final", countFlip);
-
-    if (
-      (isToggled && checkPageWidth === false && flipDisplay === false) 
-      || (isToggled && flipDisplay && checkPageWidth === false)) {
-      mainScreen.style.backgroundColor = "white";
-      mainScreen.style.color = "black";
-      pageBody.style.backgroundColor = "black";
-      pageBody.style.color = "black";
-    }
-
-    else if (
-      (isToggled === false && checkPageWidth === false && flipDisplay === false) || (isToggled && flipDisplay && checkPageWidth === false)) {
-      mainScreen.style.backgroundColor = "black";
-      mainScreen.style.color = "white";
-      pageBody.style.backgroundColor = "white";
-      // pageBody.style.color = "black";
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isToggled, resized, countFlip]);
-
-
+  
+  
   // Fetches data for the local location of the user.
   useEffect(() => {
     if (!locationData) {
@@ -223,23 +224,98 @@ export default function WeatherMain({localLocation, locationError}) {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countOnLocationChange]) 
+  
+
+  useEffect(() => {
+    const mainScreen = document.getElementById("main-screen");
+    console.log(mainScreen);
+
+    window.addEventListener("resize", () => {
+      setResized(true);
+    });
+
+    if (locationData) {
+      if (
+        (isToggled && checkPageWidth === false)) {
+        mainScreen.style.backgroundColor = "white";
+        mainScreen.style.color = "black";
+        pageBody.style.backgroundColor = "black";
+        pageBody.style.color = "black";
+      }
+      else if (
+        (isToggled === false && checkPageWidth === false)) {
+        mainScreen.style.backgroundColor = "black";
+        mainScreen.style.color = "white";
+        pageBody.style.backgroundColor = "white";
+        pageBody.style.color = "black";
+      }
+
+      setIsDataAvailable(false); // Resets the value of isDataAvailable so that the function doesn't run recursively when called below.
+      console.log("Is location data", isDataAvailable);
+      return console.log("Data has arrived!");
+    }
+
+    let interval = window.setInterval(forceUpdate, 1000);
+
+    window.setTimeout(() => {
+      clearInterval(interval);
+    }, 6000);
+
+    console.log(isDataAvailable);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isToggled, resized, isDataAvailable, countFlip]);
 
 
+  const locationErrorMessage = (
+    <div 
+      className="error-container"
+      style={errorContainerStyles}
+    >
+      <img 
+        src={errorImg2} 
+        alt="error icon" 
+        className="error-img"
+      />
+
+      <h3 
+        className="error"
+        style={errorMessageStyles}
+      >
+        Couldn't fetch your location. Please check your network and location settings and try reload the page.
+      </h3>
+    </div>
+  );
 
   // Checks if we couldn't get the user's location from the Geolocation API and throws an error.
   if (locationError) {
-    return <h3>Couldn't fetch your location. Please check your network and location settings and try reload the page.</h3>
+    return locationErrorMessage;
   } 
 
   // Checks if there is any error arising from calling the API which are handled in the fetchLocalData and fetchForeign Data functions.
   if (weatherMainError) {
-    return <h3>{weatherMainError}</h3>
+    return (
+      <div 
+        className="error-container"
+        style={errorContainerStyles}
+      >
+        <img src={errorImg1} alt="error icon" className="error-img"/>
+        <h3 
+          className="error"
+          style={errorMessageStyles}
+        >
+          {weatherMainError}
+          </h3>
+      </div>
+    );
   }
 
-  // Checks to see if we don' thave data in our location data state yet and informs the user about it.
+  // Checks to see if we don't have data in our location data state yet and informs the user about it.
   // Also helps to stop React from throwing an error on mount since no data is available and we need it in rendering. So, on state change, the data is available and this if block is not rendered.
   if (!locationData) {
-    return "Please wait. Fetching data...";
+    return (
+      <Spinner />
+    );
   }
 
 
@@ -379,7 +455,7 @@ export default function WeatherMain({localLocation, locationError}) {
         </section>
             
       </div>
-    ) 
+    );
   });
 
   
